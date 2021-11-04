@@ -3,14 +3,12 @@ import numpy
 import matplotlib.pyplot as plt
 
 # Add the variables needed in order.
-
 platform = "ios"
 
 if (platform == "ios"):
-    variableOrder = ['gyrox', 'gyroy', 'gyroz', 'magx', 'magy', 'magz', 'accelx', 'accely', 'accelz'] 
+    variableOrder = ['gyrox', 'gyroy', 'gyroz', 'accelx', 'accely', 'accelz'] 
 else:
-    variableOrder = ['gyro_x', 'gyro_y', 'gyro_z', 'compass_x', 'compass_y', 'compass_z', 'acc_x', 'acc_y', 'acc_z'] 
-
+    variableOrder = ['gyro_x', 'gyro_y', 'gyro_z', 'acc_x', 'acc_y', 'acc_z'] 
 
 """ 
 @Brief
@@ -30,6 +28,8 @@ def parse(f, mode):
     with open(f,'r') as load_f:
         load_dict = json.load(load_f)
     
+    key1 = "key1" if (platform == "ios") else "key_1"
+
     records = {}
     for entry in load_dict:
         time, value, variable = entry['serie'], entry['value'], entry['variable']
@@ -50,47 +50,47 @@ def parse(f, mode):
         state = 0
         for item in records:
             # print(item)
-            if("key1" not in item[1].keys()):
-                item[1]['key1'] = 0
+            if(key1 not in item[1].keys()):
+                item[1][key1] = 0
             if(state == 0):
-                if(int(item[1]['key1']) == 1):
+                if(int(item[1][key1]) == 1):
                     state = 1
             elif(state == 1):
-                if(int(item[1]['key1']) == 0):
+                if(int(item[1][key1]) == 0):
                     state = 2
             elif(state == 2):
-                if(int(item[1]['key1']) == 1):
+                if(int(item[1][key1]) == 1):
                     state = 3
             else:
-                if(int(item[1]['key1']) == 0):
+                if(int(item[1][key1]) == 0):
                     state = 0
             if(state != 0):
                 rec = [float(item[1][name]) for name in variableOrder]
                 data.append(rec)
     elif(mode == 1):
         for item in records:
-            if(int(item[1]['key1']) == 1):
+            if(int(item[1][key1]) == 1):
                 return numpy.array(data)
             # print(item)
             data.append([float(item[1][name]) for name in variableOrder])
     else:
         for item in records:
-            if('key1' not in item[1].keys()):
+            if(key1 not in item[1].keys()):
                 continue
-            # print(item)
             data.append([float(item[1][name]) for name in variableOrder])
     return numpy.array(data)
 
 def main():
     """ extract data from json file, and put every 30 sets of data into an array """
-    data = parse("samples/walking/walking-for-test2.json", 3)
+    data = parse("samples/ropeskipping/skipping-for-test4.json", 3)
 
-    output = numpy.empty(shape=[0, 30, 9])
+    output = numpy.empty(shape=[0, 30, 6])
     for i in range(data.shape[0] // 30):
         sample = data[i*30:i*30+30]
+        # print(sample)
         output = numpy.concatenate((output, [sample]))
     print(output.shape)
-    numpy.save("samples/walking/walking-for-test2.npy", output)
+    numpy.save("samples/ropeskipping/skipping-for-test4.npy", output)
 
 
 if __name__ == "__main__":
