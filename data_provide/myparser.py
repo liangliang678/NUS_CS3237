@@ -3,7 +3,14 @@ import numpy
 import matplotlib.pyplot as plt
 
 # Add the variables needed in order.
-variableOrder = ['gyrox', 'gyroy', 'gyroz', 'magx', 'magy', 'magz', 'accelx', 'accely', 'accelz'] 
+
+platform = "ios"
+
+if (platform == "ios"):
+    variableOrder = ['gyrox', 'gyroy', 'gyroz', 'magx', 'magy', 'magz', 'accelx', 'accely', 'accelz'] 
+else:
+    variableOrder = ['gyro_x', 'gyro_y', 'gyro_z', 'compass_x', 'compass_y', 'compass_z', 'acc_x', 'acc_y', 'acc_z'] 
+
 
 """ 
 @Brief
