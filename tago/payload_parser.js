@@ -2,7 +2,10 @@ const ignore_vars = [];
 
 function toTagoFormat(object_item)
 {
+  // if your gateway is iOS, comment it
   object_item = object_item['d'];
+
+  time = new Date().getTime();
   const result = [];
   for (const key in object_item) {
     if (ignore_vars.includes(key)) continue;
@@ -10,7 +13,8 @@ function toTagoFormat(object_item)
     result.push({
       variable: key,
       value: object_item[key],
-      time: new Date().getTime()
+      serie: object_item.serie || time,
+      time: time
     });
   }
 
