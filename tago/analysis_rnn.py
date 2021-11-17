@@ -138,7 +138,7 @@ def func_callback(context, scope):
   
 
   if(failure > SAMPLE_NUM / 2):
-    result = "Idle"
+    result = -1
     print("Doing nothing.")
   else:
     prediction = sorted(prediction.items(), key=lambda item:item[1], reverse=True)
