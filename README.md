@@ -12,9 +12,11 @@ Copy the default token number of the device.
 
 ### Analysis
 
-Create a analysis, choose Python for `Runtime`, choose External for `Run this script from`. Select `Environment Variables` and add varible `device_token`, the value is what you have copied from last step.
+Create two analyses, choose Python for `Runtime`, choose External for `Run this script from`. Select `Environment Variables` and add varible `device_token`, the value is what you have copied from last step.
 
-Change the `TOKEN` varible to your `Analysis token` in analysis.py. Run analysis.py on your machine. Because different gateway will send different MQTT message, names of variables may be fifferent, you may need to modify the code.
+Change the `TOKEN` varible to your `Analysis token` in analysis_rnn.py and analysis_sum.py. Run analysis_rnn.py and analysis_sum.py on your machine.
+
+Because different gateway will send different MQTT message, names of variables may be fifferent, you may need to modify the code.
 
 You need python3 and following library.
 ```
@@ -26,5 +28,7 @@ pip install -U tago
 The first action will push data to bucket. Select MQTT Topic for `Type of trigger`, select Insert to Device Bucket for `Type of action`. Select your device and Subscribe to your MQTT Topic.
 
 The second action will call analysis program periodically. Select Schedule for `Type of trigger`, select Run Analysis for `Type of action`. Set interval to 1 minute and select your analysis program.
+
+The third action will call summury program periodically. Select Schedule for `Type of trigger`, select Run Analysis for `Type of action`. Set Trigger to By date and set Recurrence options as your want.
 
 ## Collecting Data
