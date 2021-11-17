@@ -11,9 +11,9 @@ import torch
 import MODELTEST
 
 # Token of analysis program
-ANALYSIS_TOKEN = '74b9b103-637b-4ff2-80ff-94c326640122'
+ANALYSIS_TOKEN = 'b18c2a46-bc9a-41b6-b654-c358bdbf1d0e'
 # Token of account
-ACCOUNT_TOKEN = 'b25d1f0c-d3e5-4788-9464-a1d57c922604'
+ACCOUNT_TOKEN = 'e2898b73-9932-4cad-9e75-23c08127ae8a'
 
 # Load the model from MODELPATH
 if torch.cuda.is_available():
@@ -54,14 +54,13 @@ def isValid(data):
   return True
 
 # iOS version
-#variables = ['gyrox', 'gyroy', 'gyroz', 'accelx', 'accely', 'accelz']
+variables = ['gyrox', 'gyroy', 'gyroz', 'accelx', 'accely', 'accelz']
 # Andriod version
-variables = ['gyro_x', 'gyro_y', 'gyro_z', 'acc_x', 'acc_y', 'acc_z']
+# variables = ['gyro_x', 'gyro_y', 'gyro_z', 'acc_x', 'acc_y', 'acc_z']
 
 def func_callback(context, scope):
   my_account = tago.Account(ACCOUNT_TOKEN)
   my_devices = my_account.devices.list()
-
   for i in range(len(my_devices['result'])):
     device_token = my_account.devices.tokenList(my_devices['result'][i]['id'])
     my_device = Device(device_token['result'][0]['token'])
@@ -127,13 +126,13 @@ def func_callback(context, scope):
       for iteration in range(SAMPLE_NUM):
         input_array = []
         off = random.randint(0, len(result_gyro_x['result']) - 30)
-        for i in range(off, off+30):
-          input_array.append([float(result_gyro_x['result'][i]['value']),
-                              float(result_gyro_y['result'][i]['value']),
-                              float(result_gyro_z['result'][i]['value']),
-                              float(result_acc_x['result'][i]['value']),
-                              float(result_acc_y['result'][i]['value']),
-                              float(result_acc_z['result'][i]['value'])])
+        for j in range(off, off+30):
+          input_array.append([float(result_gyro_x['result'][j]['value']),
+                              float(result_gyro_y['result'][j]['value']),
+                              float(result_gyro_z['result'][j]['value']),
+                              float(result_acc_x['result'][j]['value']),
+                              float(result_acc_y['result'][j]['value']),
+                              float(result_acc_z['result'][j]['value'])])
         # testcases = np.concatenate((testcases, np.array([input_array])))
         isvalid = isValid(input_array)
         if(not isvalid):
@@ -145,28 +144,30 @@ def func_callback(context, scope):
         prediction[result] += 1
       
       if(failure > SAMPLE_NUM / 2):
-        print("Doing nothing.")
+        print("[Device %s]: Doing nothing." % (my_devices['result'][i]['name']))
         insert_flag = 0
       else:
         prediction = sorted(prediction.items(), key=lambda item:item[1], reverse=True)
         result = prediction[0][0]
-        print("Exersise catagory: %s. prob: %.2f" % (index_to_sport[result], prediction[0][1]/(SAMPLE_NUM - failure)))
+        print("[Device %s] Exersise catagory: %s. prob: %.2f" % (my_devices['result'][i]['name'], index_to_sport[result], prediction[0][1]/(SAMPLE_NUM - failure)))
         if(prediction[0][1]/(SAMPLE_NUM - failure) < 0.8):
           insert_flag = 0
       
       if(insert_flag):
         # Andriod version
+        '''
         insert_data = {
           'd': {
             'result': result
           }
         }
-        # iOS version
         '''
+        # iOS version
+        
         insert_data = {
           'result': result
         }
-        '''
+        
         insert_result = my_device.insert(insert_data)
         print(insert_result)
 
