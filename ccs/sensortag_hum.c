@@ -327,7 +327,14 @@ static void sensorTaskFxn(UArg a0, UArg a1)
       int flag;
 
       SensorHdc1000_convert(data.v.rawTemp, data.v.rawHum, &tmp, &hum);
-      flag = 1;
+      flag = 2;
+      if(tem >= 0 && tem <=35 && 30 <= hum && hum <=80){
+       flag = 1;
+      }
+      if(tem >= 0 && tem <=30 && 40 <= hum && hum <=60){
+       flag = 0;
+      }
+      
 
       if(flag == 0){
         SensorTagIO_blinkLed(IOID_GREEN_LED, 1);
