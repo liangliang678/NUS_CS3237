@@ -136,7 +136,7 @@ def func_callback(context, scope):
     result = MODELTEST.predictSingle(model, torch.from_numpy(input_array), BATCH_SIZE)
     prediction[result] += 1
   
-  print(failure)
+
   if(failure > SAMPLE_NUM / 2):
     result = "Idle"
     print("Doing nothing.")
