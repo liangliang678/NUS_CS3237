@@ -11,7 +11,8 @@ import torch
 import MODELTEST
 
 # Token of analysis program
-TOKEN = '74b9b103-637b-4ff2-80ff-94c326640122'
+# wyb
+TOKEN = 'b18c2a46-bc9a-41b6-b654-c358bdbf1d0e'
 
 # Load the model from MODELPATH
 if torch.cuda.is_available():
@@ -33,20 +34,28 @@ SAMPLE_NUM = 200
 TOTAL_DATA = 400
 
 def isValid(data):
-  for dim in range(6):
-    for i in range(23):
-      flag = False
-      future = [data[j][dim] for j in range(i, i+6)]
-      if(dim < 3):
-        flag = (max(future) - min(future)) < 20
-      else:
-        flag = (max(future) - min(future)) < 0.2
-      if(flag):
-        return False
-  return True
+    count = 0
+    record = []
+    for dim in range(6):
+        i = 0
+        while(i < 25):
+            flag = False
+            future = [data[j][dim] for j in range(i, i+6)]
+            if(dim < 3):
+                flag = (max(future) - min(future)) < 20
+            else:
+                flag = (max(future) - min(future)) < 0.1
+            if(flag):
+                count += 1
+                record.append((i, dim, future))
+                i += 6
+                if(count == 3):
+                    return False
+            i += 1
+    return True
 
-#variables = ['gyrox', 'gyroy', 'gyroz', 'accelx', 'accely', 'accelz']
-variables = ['gyro_x', 'gyro_y', 'gyro_z', 'acc_x', 'acc_y', 'acc_z']
+variables = ['gyrox', 'gyroy', 'gyroz', 'accelx', 'accely', 'accelz']
+#variables = ['gyro_x', 'gyro_y', 'gyro_z', 'acc_x', 'acc_y', 'acc_z']
 
 def func_callback(context, scope):
   device_token = context.environment[0]['value']
@@ -105,7 +114,8 @@ def func_callback(context, scope):
   testcases = np.empty(shape=[0, 30, 6])
   iteration = 0
   failure = 0
-  while(iteration < SAMPLE_NUM):
+  
+  for iteration in range(SAMPLE_NUM):
     input_array = []
     off = random.randint(0, len(result_gyro_x['result']) - 30)
     for i in range(off, off+30):
@@ -115,27 +125,35 @@ def func_callback(context, scope):
                     float(result_acc_x['result'][i]['value']),
                     float(result_acc_y['result'][i]['value']),
                     float(result_acc_z['result'][i]['value'])])
-
-    if(not isValid(input_array)):
+    # testcases = np.concatenate((testcases, np.array([input_array])))
+    isvalid = isValid(input_array)
+    if(not isvalid):
       failure += 1
       continue
     
     input_array = np.array([input_array])
+    
     result = MODELTEST.predictSingle(model, torch.from_numpy(input_array), BATCH_SIZE)
     prediction[result] += 1
-    iteration += 1
+  
+  print(failure)
+  if(failure > SAMPLE_NUM / 2):
+    result = "Idle"
+    print("Doing nothing.")
+  else:
+    prediction = sorted(prediction.items(), key=lambda item:item[1], reverse=True)
+    # print(prediction)
+    result = prediction[0][0]
+    print("Exersise catagory: %s. prob: %.2f" % (index_to_sport[result], prediction[0][1]/(SAMPLE_NUM - failure)))
 
-  prediction = sorted(prediction.items(), key=lambda item:item[1], reverse=True)
-  print("Exersise catagory: %s. prob: %.2f" % (index_to_sport[prediction[0][0]], prediction[0][1]/SAMPLE_NUM))
-
-  if(prediction[0][1]/SAMPLE_NUM >= 0.50):
-    insert_data = {
-      'd': {
-        'result': prediction[0][0]
-      }
+  insert_data = {
+    'd': {
+      'result': result
     }
-    insert_result = my_device.insert(insert_data)
-    print(insert_result)
+  }
+  insert_result = my_device.insert(insert_data)
+  print(insert_result)
+
 
 if __name__ == '__main__':
   Analysis(TOKEN).init(func_callback)
