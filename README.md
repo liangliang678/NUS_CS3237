@@ -1,5 +1,25 @@
 # CS3237 Project
 
+## Setup of SensorTag App
+
+Download the latest SensorTag App from Google Play. Connect to CC2650 Sensortag.
+
+### Cloud View
+
+Click on ADVANCED button, the Cloud Setup is as following:
+```
+Cloud service: IBM Watson IoT Platform
+Username: tagoio
+Password: Your device token
+Broker Addres: mqtt.tago.io
+Broker Port: 1883
+Publish Topic: data
+```
+Turn on Push to Cloud switch.
+
+### Sensors
+Turn off Ambient Temperature Data, Barometer Data. Click on Humidity Data, set sensor period to 1000ms. Click on Motion Data, set sensor period to 100ms. Set Connection Contril Service to Balanced.
+
 ## Setup of Tago
 
 ### Device
