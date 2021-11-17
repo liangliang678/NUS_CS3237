@@ -5,9 +5,12 @@ from tago import Device
 import time
 
 # Token of analysis program
-ANALYSIS_TOKEN = 'b454f476-6f42-467f-8af9-27d0467d6aee'
+ANALYSIS_TOKEN = 'b7d8bc70-54b0-444c-9658-80e28bfce188'
 # Token of account
-ACCOUNT_TOKEN = 'b25d1f0c-d3e5-4788-9464-a1d57c922604'
+ACCOUNT_TOKEN = 'e2898b73-9932-4cad-9e75-23c08127ae8a'
+
+def calorie(walking, running, ropejumping):
+  return 5.33 * walking + 10 * running + 20 * ropejumping
 
 def my_analysis(context, scope):
   my_account = tago.Account(ACCOUNT_TOKEN)
@@ -32,7 +35,7 @@ def my_analysis(context, scope):
       if(result['result'][j]['value'] == 0):
         walking += 1
       elif(result['result'][j]['value'] == 1):
-        runing += 1
+        running += 1
       elif(result['result'][j]['value'] == 2):
         ropejumping += 1
 
@@ -40,8 +43,8 @@ def my_analysis(context, scope):
     email = Services(ANALYSIS_TOKEN).email
     to = my_devices['result'][i]['tags'][0]['value']
     subject = 'Exercise Summary of %s' % date
-    message = 'Hi! This is today\'s exercise summary.\nYou walked for %d minutes, ran for %d minutes, ropejumped for %d minutes.' % (walking, running, ropejumping)
-    # print(email.send(to, subject, message, None, None, None, None))
+    message = 'Hi! This is today\'s exercise summary.\nYou walked for %d minutes, ran for %d minutes, ropejumped for %d minutes. You have burned %.2f calories!' % (walking, running, ropejumping, calorie(walking, running, ropejumping))
+    print(email.send(to, subject, message, None, None, None, None))
     print(to)
     print(subject)
     print(message)
