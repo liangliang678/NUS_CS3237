@@ -3,19 +3,31 @@ from tago import Services
 from tago import Device
 import time
 
-TOKEN = 'b454f476-6f42-467f-8af9-27d0467d6aee'
+TOKEN = 'b7d8bc70-54b0-444c-9658-80e28bfce188'
+
 
 def my_analysis(context, scope):
   device_token = context.environment[0]['value']
   my_device = Device(device_token)
 
+  # android version
+  """
+  filter = {
+    'variable': 'd',
+    'qty' : 86400,
+    'start_date': '1 day'
+  }
+  """
+
+  # ios version
   filter = {
     'variable': 'result',
     'qty' : 86400,
     'start_date': '1 day'
   }
+
   result = my_device.find(filter)
- 
+
   walking = 0
   running = 0
   ropejumping = 0
@@ -30,9 +42,10 @@ def my_analysis(context, scope):
   date = time.strftime("%Y-%m-%d", time.localtime())
 
   email = Services(TOKEN).email
-  to = 'wujunliang18@mails.ucas.ac.cn'
+  to = 'wangyibin18@mails.ucas.ac.cn'
   subject = 'Exercise Summary of %s' % date
   message = 'Hi! This is today\'s exercise summary.\nYou walked for %d minutes, ran for %d minutes, ropejumped for %d minutes.' % (walking, running, ropejumping)
-  print(email.send(to, subject, message, None, None, None, None))
+  # print(email.send(to, subject, message, None, None, None, None))
+  print(message)
 
 Analysis(TOKEN).init(my_analysis)
