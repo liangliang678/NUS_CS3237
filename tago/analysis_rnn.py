@@ -142,14 +142,12 @@ def func_callback(context, scope):
     print("Doing nothing.")
   else:
     prediction = sorted(prediction.items(), key=lambda item:item[1], reverse=True)
-    # print(prediction)
+    print(prediction)
     result = prediction[0][0]
     print("Exersise catagory: %s. prob: %.2f" % (index_to_sport[result], prediction[0][1]/(SAMPLE_NUM - failure)))
 
   insert_data = {
-    'd': {
-      'result': result
-    }
+    'result': result
   }
   insert_result = my_device.insert(insert_data)
   print(insert_result)
