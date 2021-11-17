@@ -61,6 +61,7 @@
 #include "sensortag.h"
 #include "SensorTagTest.h"
 #include "SensorUtil.h"
+#include "sensortag_io.h"
 
 #include <ti/sysbios/knl/Semaphore.h>
 #include <ti/sysbios/knl/Task.h>
@@ -78,6 +79,7 @@
 
 // Time start measurement and data ready
 #define HUM_DELAY_PERIOD        15
+#define TIP_DELAY_PERIOD        50
 
 // Length of the data for this sensor
 #define SENSOR_DATA_LEN         HUMIDITY_DATA_LEN
@@ -320,11 +322,29 @@ static void sensorTaskFxn(UArg a0, UArg a1)
       // 2. Read data
       SensorHdc1000_read(&data.v.rawTemp, &data.v.rawHum);
 
+      // 2.5 Health tip
+      float tmp, hum;
+      int flag;
+
+      SensorHdc1000_convert(data.v.rawTemp, data.v.rawHum, &tmp, &hum);
+      flag = 1;
+
+      if(flag == 0){
+        SensorTagIO_blinkLed(IOID_GREEN_LED, 1);
+      }
+      else if(flag ==1){
+        SensorTagIO_blinkLed(IOID_GREEN_LED, 1);
+        SensorTagIO_blinkLed(IOID_RED_LED, 1);
+      }
+      else{
+        SensorTagIO_blinkLed(IOID_RED_LED, 1);
+      }
+
       // 3. Send data
       Humidity_setParameter(SENSOR_DATA, SENSOR_DATA_LEN, data.a);
 
       // 4. Wait until next cycle
-      DELAY_MS(sensorPeriod - HUM_DELAY_PERIOD);
+      DELAY_MS(sensorPeriod - HUM_DELAY_PERIOD - TIP_DELAY_PERIOD);
     }
     else
     {

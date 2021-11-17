@@ -639,9 +639,9 @@ static void SensorTag_taskFxn(UArg a0, UArg a1)
       if (gapProfileState == GAPROLE_ADVERTISING)
       {
 #ifdef IOID_GREEN_LED
-        SensorTagIO_blinkLed(IOID_GREEN_LED, 1);
+        // SensorTagIO_blinkLed(IOID_GREEN_LED, 1);
 #else
-        SensorTagIO_blinkLed(IOID_RED_LED, 1);
+        // SensorTagIO_blinkLed(IOID_RED_LED, 1);
 #endif
         #ifdef INCLUDE_DISPLAY
         SensorTagDisplay_showBatteryLevel();
