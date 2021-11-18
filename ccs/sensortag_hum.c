@@ -79,7 +79,7 @@
 
 // Time start measurement and data ready
 #define HUM_DELAY_PERIOD        15
-#define TIP_DELAY_PERIOD        50
+#define TIP_DELAY_PERIOD        500
 
 // Length of the data for this sensor
 #define SENSOR_DATA_LEN         HUMIDITY_DATA_LEN
@@ -338,13 +338,16 @@ static void sensorTaskFxn(UArg a0, UArg a1)
 
       if(flag == 0){
         SensorTagIO_blinkLed(IOID_GREEN_LED, 1);
+        DELAY_MS(TIP_DELAY_PERIOD);
       }
       else if(flag ==1){
         SensorTagIO_blinkLed(IOID_GREEN_LED, 1);
+        DELAY_MS(TIP_DELAY_PERIOD);
         SensorTagIO_blinkLed(IOID_RED_LED, 1);
       }
       else{
         SensorTagIO_blinkLed(IOID_RED_LED, 1);
+        DELAY_MS(TIP_DELAY_PERIOD);
       }
 
       // 3. Send data
