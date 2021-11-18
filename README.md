@@ -1,5 +1,15 @@
 # CS3237 Project
 
+## Directory Structure
+
+| Directory | Function |
+| -- | -- |
+| ccs | codes and images of firmware running on CC2650 SensorTag |
+| data | data for training RNN model |
+| data_provide | scripts for data preprocessing |
+| RNN | python code for RNN model |
+| tago | files related to TagoIO |
+
 ## Setup of CC2650 SensorTag
 
 Use UniFlash to load two hex image under ccs folder to your CC2650 SensorTag.

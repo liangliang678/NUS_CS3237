@@ -22,7 +22,7 @@ def my_analysis(context, scope):
 
     filter = {
       'variable': 'result',
-      'qty' : 86400,
+      'qty' : 1440,
       'start_date': '1 day'
     }
 
