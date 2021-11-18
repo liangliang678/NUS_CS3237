@@ -35,6 +35,7 @@ SAMPLE_NUM = 200
 TOTAL_DATA = 400
 
 def isValid(data):
+  count_dim = [0 for i in range(6)]
   count = 0
   for dim in range(6):
     i = 0
@@ -49,7 +50,9 @@ def isValid(data):
         count += 1
         i += 6
         if(count == 3):
-          return False
+          count_dim[dim] = 1
+          if(sum(count_dim) >= 2):
+            return False
       i += 1
   return True
 
