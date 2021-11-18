@@ -4,7 +4,7 @@
 
 Use UniFlash to load two hex image under ccs folder to your CC2650 SensorTag.
 
-Alternatively [CC26x0 SimpleLink™ Bluetooth® low energy Software Stack 2.2.x](https://www.ti.com/lit/ug/swru393e/swru393e.pdf) and use example code in examples\cc2650stk\sensortag\ccs. We only modified sensortag.c and sensortag_hum.c, which are under ccs folder.
+Alternatively, you can refer to [CC26x0 SimpleLink™ Bluetooth® low energy Software Stack 2.2.x](https://www.ti.com/lit/ug/swru393e/swru393e.pdf) and use example code in examples\cc2650stk\sensortag\ccs. We only modified sensortag.c and sensortag_hum.c, which are under ccs folder.
 
 ## Setup of SensorTag App
 
@@ -24,7 +24,7 @@ Publish Topic: data
 Turn on Push to Cloud switch.
 
 ### Sensors
-Turn off Ambient Temperature Data, Barometer Data. Click on Humidity Data, set sensor period to 1000ms. Click on Motion Data, set sensor period to 100ms. Set Connection Contril Service to Balanced.
+Turn off Ambient Temperature Data, Barometer Data. Click on Humidity Data, set sensor period to 1000ms. Click on Motion Data, set sensor period to 100ms. Set Connection Control Service to Balanced.
 
 ## Setup of Tago
 
@@ -32,7 +32,7 @@ Turn off Ambient Temperature Data, Barometer Data. Click on Humidity Data, set s
 
 Create two analyses, choose Python for `Runtime`, choose External for `Run this script from`.
 
-Change the `ANALYSIS_TOKEN` varible to your `Analysis token`, change the `ACCOUNT_TOKEN` varible to your `Account token` in analysis_rnn.py and analysis_sum.py. Run analysis_rnn.py and analysis_sum.py on your machine.
+Change the `ANALYSIS_TOKEN` variable to your `Analysis token`, change the `ACCOUNT_TOKEN` variable to your `Account token` in analysis_rnn.py and analysis_sum.py. Run analysis_rnn.py and analysis_sum.py on your machine.
 
 Because different gateway will send different MQTT message, names of variables may be fifferent, you may need to modify the code.
 
@@ -43,11 +43,11 @@ pip install -U tago
 
 ### Action
 
-The first action will push data to bucket. Select MQTT Topic for `Type of trigger`, select Insert to Device Bucket for `Type of action`. Select your device and Subscribe to your MQTT Topic (which is `data`). Do notice that you need to create this action for every devices.
+The first action will push data to the bucket. Select MQTT Topic for `Type of trigger`, select Insert to Device Bucket for `Type of action`. Select your device and Subscribe to your MQTT Topic (which is `data`). Do notice that you need to create this action for every device.
 
-The second action will call analysis program periodically. Select Schedule for `Type of trigger`, select Run Analysis for `Type of action`. Set interval to 1 minute and select your analysis program.
+The second action will call classification program periodically. Select Schedule for `Type of trigger`, select Run Analysis for `Type of action`. Set interval to 1 minute and select your classification analysis.
 
-The third action will call summury program periodically. Select Schedule for `Type of trigger`, select Run Analysis for `Type of action`. Set Trigger to By date and set Recurrence options as your want.
+The third action will call summury program periodically. Select Schedule for `Type of trigger`, select Run Analysis for `Type of action`. Set Trigger to By date and set Recurrence options as your want. Select your summury analysis.
 
 ### Register a new device
 
