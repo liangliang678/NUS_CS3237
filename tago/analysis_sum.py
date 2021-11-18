@@ -87,7 +87,7 @@ def my_analysis(context, scope):
     subject = 'Exercise Summary of %s' % date
     message = 'Hi! This is today\'s exercise summary.\nYou walked for %d minutes, ran for %d minutes, ropejumped for %d minutes. You have burned %.2f calories!' % (walking, running, ropejumping, calorie(walking, running, ropejumping))
     message = message + '\ndetails:\n' + time_report 
-    #print(email.send(to, subject, message, None, None, None, None))
+    print(email.send(to, subject, message, None, None, None, None))
     print(to)
     print(subject)
     print(message)
