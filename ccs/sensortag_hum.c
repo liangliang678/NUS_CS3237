@@ -328,10 +328,10 @@ static void sensorTaskFxn(UArg a0, UArg a1)
 
       SensorHdc1000_convert(data.v.rawTemp, data.v.rawHum, &tmp, &hum);
       flag = 2;
-      if(tem >= 0 && tem <=35 && 30 <= hum && hum <=80){
+      if(tmp >= 0 && tmp <=35 && 30 <= hum && hum <=80){
        flag = 1;
       }
-      if(tem >= 0 && tem <=30 && 40 <= hum && hum <=60){
+      if(tmp >= 0 && tmp <=30 && 40 <= hum && hum <=60){
        flag = 0;
       }
       

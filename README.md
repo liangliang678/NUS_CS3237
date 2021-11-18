@@ -2,7 +2,9 @@
 
 ## Setup of CC2650 SensorTag
 
-TODO
+Use UniFlash to load two hex image under ccs folder to your CC2650 SensorTag.
+
+Alternatively [CC26x0 SimpleLink™ Bluetooth® low energy Software Stack 2.2.x](https://www.ti.com/lit/ug/swru393e/swru393e.pdf) and use example code in examples\cc2650stk\sensortag\ccs. We only modified sensortag.c and sensortag_hum.c, which are under ccs folder.
 
 ## Setup of SensorTag App
 
